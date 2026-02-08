@@ -25,7 +25,7 @@ import { SpinButton } from './components/controls/SpinButton.tsx';
 import { BettingControl } from './components/controls/BettingControl.tsx';
 
 export const App: React.FC = () => {
-  const { state, actions } = useSlotMachine();
+  const { state, actions, dispatch } = useSlotMachine();
   const [debugOpen, setDebugOpen] = useState(false);
   const [paytableOpen, setPaytableOpen] = useState(false);
   const [forcedSymbols, setForcedSymbols] = useState<(SlotSymbol | null)[]>([null, null, null]);
@@ -196,6 +196,10 @@ export const App: React.FC = () => {
           setForcedSymbols(next);
         }}
         onClear={() => setForcedSymbols([null, null, null])}
+        onUpdateBalance={(amt) => dispatch({ type: 'UPDATE_BALANCE', amount: amt })}
+        onGainXP={(amt) => dispatch({ type: 'GAIN_XP', amount: amt })}
+        onAddRelic={actions.buyRelic}
+        onOpenAltar={actions.spin} // Since actions.spin checks for Altar when frequency is met, we'll manually open it below:
       />
     </>
   );

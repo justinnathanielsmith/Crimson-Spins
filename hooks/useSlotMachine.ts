@@ -90,7 +90,7 @@ export const useSlotMachine = () => {
         }
       }
     }
-  }, [state.bet, state.jackpot, state.relics, playOracleVoice]);
+  }, [state.bet, state.jackpot, state.relics, playOracleVoice, state.level]);
 
   const spin = useCallback(async () => {
     if (state.balance < state.bet || state.status === GameStatus.SPINNING) return;
