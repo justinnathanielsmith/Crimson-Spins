@@ -2,6 +2,7 @@
 import React from 'react';
 import { Relic } from '../types.ts';
 import { RELICS } from '../constants.tsx';
+import { soundManager } from '../services/sounds.ts';
 
 interface BloodAltarProps {
   balance: number;
@@ -11,6 +12,11 @@ interface BloodAltarProps {
 }
 
 const BloodAltar: React.FC<BloodAltarProps> = ({ balance, onBuy, onClose, ownedRelics }) => {
+  const handlePurchase = (relic: Relic) => {
+    onBuy(relic);
+    soundManager.play('relic_collect');
+  };
+
   return (
     <div className="w-full min-h-[500px] flex flex-col items-center p-6 animate-in fade-in zoom-in duration-700 bg-red-950/20 backdrop-blur-md rounded-3xl border-2 border-red-900/40">
       <div className="text-center mb-8">
@@ -36,7 +42,7 @@ const BloodAltar: React.FC<BloodAltarProps> = ({ balance, onBuy, onClose, ownedR
               <p className="text-[10px] text-zinc-400 mb-6 font-serif h-12">{relic.description}</p>
               
               <button
-                onClick={() => onBuy(relic)}
+                onClick={() => handlePurchase(relic)}
                 disabled={isOwned || !canAfford}
                 className={`
                   w-full py-2 rounded-lg font-gothic text-xs uppercase tracking-widest transition-all

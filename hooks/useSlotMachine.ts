@@ -172,7 +172,6 @@ export const useSlotMachine = () => {
   const buyRelic = useCallback((relic: Relic) => {
     if (state.balance >= relic.cost && state.relics.length < 5) {
       dispatch({ type: 'ADD_RELIC', relic });
-      soundManager.play('win');
     }
   }, [state.balance, state.relics.length]);
 

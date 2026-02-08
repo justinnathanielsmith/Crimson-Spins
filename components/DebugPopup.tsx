@@ -2,6 +2,7 @@
 import React from 'react';
 import { SlotSymbol, Relic } from '../types.ts';
 import { SYMBOLS, RELICS } from '../constants.tsx';
+import { soundManager } from '../services/sounds.ts';
 
 interface DebugPopupProps {
   isOpen: boolean;
@@ -38,6 +39,11 @@ const DebugPopup: React.FC<DebugPopupProps> = ({
     [0, 1, 2].forEach(i => onSetForced(i, vampire));
   };
 
+  const handleManifestRelic = (relic: Relic) => {
+    onAddRelic(relic);
+    soundManager.play('relic_collect');
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-sm p-2 md:p-4 animate-in fade-in duration-300">
       <div className="bg-zinc-950 border-2 md:border-4 border-purple-900 rounded-3xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col shadow-[0_0_80px_rgba(147,51,234,0.4)]">
@@ -64,7 +70,7 @@ const DebugPopup: React.FC<DebugPopupProps> = ({
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[0, 1, 2].map(reelIdx => (
-                <div key={reelIdx} className="bg-black/40 p-3 rounded-2xl border border-purple-900/10 flex flex-col">
+                <div key={reelIdx} className="bg-black/40 p-3 rounded-2xl border border-purple-900/10 flex flex-col min-w-0">
                   <h4 className="text-center font-gothic text-[10px] text-purple-500 uppercase mb-3 font-bold tracking-[0.2em]">Vial {reelIdx + 1}</h4>
                   <div className="flex flex-col gap-2 max-h-52 overflow-y-auto pr-1 custom-scrollbar">
                     <button
@@ -138,7 +144,7 @@ const DebugPopup: React.FC<DebugPopupProps> = ({
               {RELICS.map(relic => (
                 <button 
                   key={relic.id}
-                  onClick={() => onAddRelic(relic)}
+                  onClick={() => handleManifestRelic(relic)}
                   className="p-4 bg-black/40 border border-purple-900/20 rounded-2xl flex flex-col items-center gap-2 hover:border-purple-500 hover:bg-purple-900/10 transition-all group"
                 >
                   <span className="text-3xl group-hover:scale-125 transition-transform drop-shadow-[0_0_8px_rgba(147,51,234,0.3)]">{relic.emoji}</span>

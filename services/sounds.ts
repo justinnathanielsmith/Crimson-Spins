@@ -55,6 +55,9 @@ export class SoundManager {
       case 'hunter_found':
         this.playHunterSting(ctx, now);
         return null;
+      case 'relic_collect':
+        this.playRelicCollect(ctx, now);
+        return null;
       default:
         return null;
     }
@@ -213,6 +216,22 @@ export class SoundManager {
     gain.connect(ctx.destination);
     osc.start(now);
     osc.stop(now + 1);
+  }
+
+  private playRelicCollect(ctx: AudioContext, now: number) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(600, now);
+    osc.frequency.exponentialRampToValueAtTime(1200, now + 0.1);
+    osc.frequency.exponentialRampToValueAtTime(800, now + 0.3);
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.2, now + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
   }
 
   toggleMute() {
